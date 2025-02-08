@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App with Score Tracking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .options button:hover {
+      background-color: #e0e0e0;
+    }
+    .score {
+      text-align: center;
+      font-size: 1.5em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="quiz">
+      <p id="question" class="question"></p>
+      <div class="options" id="options"></div>
+      <button id="next-btn" style="display:none; margin-top: 10px;">Next Question</button>
+      <div id="score" class="score" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is a key purpose of flex codes in Oracle Health Insurance components?",
+        options: ["Managing system errors", "Storing domain-specific values", "User authentication", "Data visualization"],
+        answer: 1
+      },
+      {
+        question: "Which attribute determines where a flex code can be used within the system?",
+        options: ["Field Usability", "Code Validity", "Usage Type", "Field Usages"],
+        answer: 3
+      },
+      {
+        question: "Flex code definitions often include 'Allowable Values.' What does this refer to?",
+        options: ["The data types supported by the code", "User-defined labels", "The predefined values that can be selected for the flex code", "System-generated identifiers"],
+        answer: 2
+      },
+      {
+        question: "Which business element are flex codes typically associated with in Oracle Insurance policies?",
+        options: ["Validation checks", "User login process", "Insurance premium rates", "Data encryption algorithms"],
+        answer: 0
+      },
+      {
+        question: "What action must administrators perform to ensure the correct use of flex codes?",
+        options: ["Delete invalid entries", "Define allowable values and assign field usages", "Manage login credentials", "Optimize system logs"],
+        answer: 1
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    const maxAttempts = 3;
+    let attempts = JSON.parse(localStorage.getItem("quizAttempts")) || [];
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const scoreEl = document.getElementById("score");
+
+    function loadQuestion() {
+      const current = questions[currentQuestion];
+      questionEl.textContent = current.question;
+      optionsEl.innerHTML = "";
+      current.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.addEventListener("click", () => checkAnswer(index));
+        optionsEl.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedIndex) {
+      const correctIndex = questions[currentQuestion].answer;
+      if (selectedIndex === correctIndex) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        handleCompletion();
+      }
+    }
+
+    function handleCompletion() {
+      attempts.push(score);
+      if (attempts.length > maxAttempts) attempts.shift(); // Keep only last 3 attempts
+
+      localStorage.setItem("quizAttempts", JSON.stringify(attempts));
+      const bestScore = Math.max(...attempts);
+
+      questionEl.style.display = "none";
+      optionsEl.style.display = "none";
+      scoreEl.style.display = "block";
+      scoreEl.innerHTML = `You scored ${score} out of ${questions.length}<br>Best score of last ${maxAttempts} attempts: ${bestScore}`;
+
+      sendScoreToSupervisor(score, bestScore);
+    }
+
+    function sendScoreToSupervisor(currentScore, bestScore) {
+      const supervisorEmail = "supervisor@example.com";
+      const mailBody = `Current Score: ${currentScore}\nBest Score: ${bestScore}`;
+      window.open(`mailto:${supervisorEmail}?subject=Quiz Results&body=${encodeURIComponent(mailBody)}`);
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
