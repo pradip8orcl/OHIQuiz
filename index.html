@@ -93,11 +93,6 @@
         button.addEventListener("click", () => checkAnswer(current.options.indexOf(option)));
         optionsEl.appendChild(button);
       });
-	  const sourceTag = document.createElement("p");
-      sourceTag.style.fontSize = "0.9em";
-      sourceTag.style.color = "#888";
-      sourceTag.textContent = `Source: ${current.source}`;
-      optionsEl.parentNode.insertBefore(sourceTag, optionsEl);
     }
 
     function checkAnswer(selectedIndex) {
