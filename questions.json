@@ -1,0 +1,27 @@
+[
+  {
+    "question": "What is the purpose of Code Definitions in Oracle Health Insurance ?",
+    "options": ["To store policy data", "To create and manage extensible codes", "To monitor claim processes", "To manage database connections"],
+    "answer": 1
+  },
+  {
+    "question": "Which component is used to group similar types of codes in OHI?",
+    "options": ["Code List", "Code Definition", "Code Category", "Code Map"],
+    "answer": 0
+  },
+  {
+    "question": "What data type does Code Definition support for code storage in OHI?",
+    "options": ["String", "Boolean", "Integer", "Date"],
+    "answer": 0
+  },
+  {
+    "question": "What is the main advantage of using extensible code definitions?",
+    "options": ["Improved database performance", "Greater flexibility for configuration", "Easier report generation", "Enhanced security"],
+    "answer": 1
+  },
+  {
+    "question": "How are new codes added in Oracle's extensibility framework?",
+    "options": ["By creating new tables", "By extending the code lists", "By hardcoding", "By modifying policy rules"],
+    "answer": 1
+  }
+]
